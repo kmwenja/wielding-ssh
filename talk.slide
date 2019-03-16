@@ -1,0 +1,173 @@
+Wielding SSH
+16:00 2 Mar 2019
+
+Kennedy Mwenja
+Software Engineer, Savannah Informatics Ltd.
+
+* Scope
+
+- Familiarity with basic ssh usage, basic golang
+- A high level look at the SSH protocol
+- Showcase typical SSH usage with golang.org/x/crypto/ssh
+- Sample implementations
+- Ironfist
+- Caveat: error handling removed for brevity
+- Caveat: examples are not prod ready
+
+: 16.05
+
+* Let's begin
+
+* Intro
+
+- SSH 2.0
+- OpenSSH, Putty
+- RFCs: 4251, 4252, 4253, 4254
+- Golang's crypto/ssh
+
+* Layers
+
+.image ssh_layers.png 500 _
+
+: OSI
+
+* SSH Connection: Channels
+
+.image ssh_channels.png 500 _
+
+: Channels are on both the server and client
+
+* SSH Connection: Requests
+
+.image ssh_requests.png 500 _
+
+* SSH Connection: Request
+
+.image ssh_request.png 500 _
+
+* Client flow
+
+1. Connect to server socket
+2. Authenticate server *
+3. Perform credentials handshake *
+4. Connection established!
+5. Handle connection.
+
+    * crypto/ssh provides hooks and does the legwork
+
+* Server flow
+
+1. Listen on socket
+2. Accept client connection
+3. Perform credentials handshake *
+4. Connection established!
+5. Handle connection.
+
+    * crypto/ssh provides hooks and does the legwork
+
+* Connection Handling
+
+- Make global requests & Handle other side's global requests
+- Open channels and Accept the other side's incoming channels
+- Send data over channels
+- Make channel requests & Handle other side's channel requests
+
+    * All these run concurrently so the lib is channel heavy!
+
+* Client flow in Go (high level api)
+
+.code snippets/client_skeleton.go /^func main/,/^}/
+
+* Client flow (low level api)
+
+.code snippets/client_low_level_skeleton.go /^func main/,/^}/
+
+* Client auth options
+
+.code snippets/client_auth_skeleton.go  /^func main/,/^}/
+
+* Client auth options: Agent
+
+.code demo/ssh_agent/main.go /START OMIT/,/END OMIT/
+
+* Client Demos
+
+- password
+- public key
+- agent
+- running command
+- uploading files
+- downloading files
+
+* Server flow in Go
+
+.code snippets/server_skeleton.go /^func main/,/^}/
+
+* Connection Handling in Go: Requests
+
+.code snippets/global_requests_skeleton.go /^func main/,/^}/
+
+* Connection Handling in Go: Channels
+
+.code snippets/channels_skeleton.go /^func main/,/^}/
+
+* Example: Starting a Shell (client)
+
+1. Open channel on the server of type "session"
+2. Request PTY: Send channel request  of type "pty-req"
+3. Request Shell: Send channel request of type "shell"
+4. Connect opened channel to the stdio of the shell
+5. Accept user input.
+
+See: demo/ssh_password/main.go (startTerminal)
+
+* Example: Starting a Shell (server)
+
+1. Accept channel from client of type "session"
+2. Receive "pty-req" channel request and configure a terminal as specified
+3. Receive "shell" channel request and start a shell on the configured terminal
+4. Connect the terminal's stdio to the accepted channel
+5. Wait for data from the client.
+
+See: demo/ssh_server/main.go (handleSessionChannel)
+
+* Server Demo
+
+- password
+- public key
+- shell
+- running command
+- run command that needs pty
+
+* Other things you could try
+
+- Tunnels! (local/remote/dynamic port forwarding)
+- X11 forwarding
+- etc
+
+* Sample Implementations
+
+- github.com/shazow/ssh-chat
+- github.com/zachlatta/sshtron
+- Gitea and Gogs git+ssh
+- Hashicorp's Vault SSH engine
+- Gravitational's Teleport
+
+* Ironfist
+
+- Bastion
+- Support tunneling for non public, firewalled hosts
+- Web UI for node & user registration, access request/approval
+- Audit logging
+- Usable by SSH tools e.g. ssh, ansible
+
+* Learn more
+
+Docs - https://godoc.org/golang.org/x/crypto/ssh
+Code - https://github.com/golang/crypto/tree/master/ssh
+High Level APIS - https://github.com/gliderlabs/ssh
+RFC 4251 (start here) - https://tools.ietf.org/html/rfc4251
+
+: Blog posts, Stack Overflow, Github Issues, Mailing Lists
+
+* Q & A
