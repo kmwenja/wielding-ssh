@@ -29,13 +29,13 @@ Run the demo programs:
 References:
 -----------
 
-Docs - https://godoc.org/golang.org/x/crypto/ssh
-Code - https://github.com/golang/crypto/tree/master/ssh
-High Level APIS - https://github.com/gliderlabs/ssh
-RFC 4251 (start here) - https://tools.ietf.org/html/rfc4251
-SSH Chat - https://github.com/shazow/ssh-chat
-SSH Tron - https://github.com/zachlatta/sshtron
-Gitea - https://github.com/go-gitea/gitea
-Gogs - https://github.com/gogs/gogs
-Hashicorp's Vault - https://github.com/hashicorp/vault
-Gravitational's Teleport - https://github.com/gravitational/teleport
+- Docs - https://godoc.org/golang.org/x/crypto/ssh
+- Code - https://github.com/golang/crypto/tree/master/ssh
+- High Level APIS - https://github.com/gliderlabs/ssh
+- RFC 4251 (start here) - https://tools.ietf.org/html/rfc4251
+- SSH Chat - https://github.com/shazow/ssh-chat
+- SSH Tron - https://github.com/zachlatta/sshtron
+- Gitea - https://github.com/go-gitea/gitea
+- Gogs - https://github.com/gogs/gogs
+- Hashicorp's Vault - https://github.com/hashicorp/vault
+- Gravitational's Teleport - https://github.com/gravitational/teleport
